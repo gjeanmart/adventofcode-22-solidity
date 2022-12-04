@@ -9,7 +9,7 @@ contract Day01 {
     using strings for *;
     using Math for uint256;
 
-    function countCalories(string memory s)
+    function run(string memory s)
         external
         pure
         returns (uint256)
