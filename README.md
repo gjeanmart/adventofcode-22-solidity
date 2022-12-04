@@ -27,3 +27,4 @@ $ npx hardhat dayXX
 Thank you
 - [Hardhat](https://hardhat.org/) (including [ethers.js](https://docs.ethers.io/v5/))
 - [Nick Johnson's string library](https://github.com/Arachnid/solidity-stringutils)
+- [OpenZeppelin contracts](https://www.openzeppelin.com/contracts)
