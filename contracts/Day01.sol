@@ -9,27 +9,26 @@ contract Day01 {
     using strings for *;
     using Math for uint256;
 
-    function run(string memory s)
-        external
-        pure
-        returns (uint256)
-    {
+    function run(string memory s) external pure returns (uint256) {
         strings.slice memory input = s.toSlice();
         strings.slice memory delim1 = "\n\n".toSlice();
         strings.slice memory delim2 = "\n".toSlice();
 
-        uint biggestElfHolderCal = 0;
+        uint256 biggestElfHolderCal = 0;
 
         while (!input.empty()) {
-            strings.slice memory elf = input.split(delim1);
-            uint totalCarriedByEft = 0;
+            strings.slice memory elfCals = input.split(delim1);
+            uint256 totalCalCarriedByEft = 0;
 
-            while (!elf.empty()) {
-                strings.slice memory calory = elf.split(delim2);
+            while (!elfCals.empty()) {
+                strings.slice memory calory = elfCals.split(delim2);
                 uint256 cal = utils.st2num(calory.toString());
-                totalCarriedByEft = totalCarriedByEft + cal;
+                totalCalCarriedByEft = totalCalCarriedByEft + cal;
             }
-            biggestElfHolderCal = Math.max(biggestElfHolderCal, totalCarriedByEft);
+            biggestElfHolderCal = Math.max(
+                biggestElfHolderCal,
+                totalCalCarriedByEft
+            );
         }
 
         return biggestElfHolderCal;
