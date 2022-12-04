@@ -1,15 +1,22 @@
 require("@nomicfoundation/hardhat-toolbox");
 const utils = require("./utils");
 
-task(
-  "day01",
-  "Find the Elf carrying the most Calories. How many total Calories is that Elf carrying?"
-).setAction(async (_taskArgs) => {
-  const puzzle = "Day01";
-  const contract = await utils.deployFullContract(puzzle);
-  const solution = await utils.runContract("resources/day01-input02.txt", contract)
-  console.log("=> solution for " + puzzle + " : " + solution);
-});
+task("solve-puzzle", "Solve Advent of Code puzzle")
+  .addParam("day", "Which day?")
+  .addParam("withlib", "Include lib in the contact deployment?")
+  .setAction(async (taskArgs) => {
+    const contract = await utils.deployFullContract(
+      "Day" + taskArgs.day,
+      JSON.parse(taskArgs.withlib)
+    );
+    const solution = await utils.runContract(
+      "resources/day" + taskArgs.day + "-input.txt",
+      contract
+    );
+    console.log(
+      "=> solution for puzzle Day " + taskArgs.day + " : " + solution
+    );
+  });
 
 module.exports = {
   solidity: "0.8.17",

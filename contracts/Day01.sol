@@ -23,7 +23,7 @@ contract Day01 {
             while (!elfCals.empty()) {
                 strings.slice memory calory = elfCals.split(delim2);
                 uint256 cal = utils.st2num(calory.toString());
-                totalCalCarriedByEft = totalCalCarriedByEft + cal;
+                totalCalCarriedByEft += cal;
             }
             biggestElfHolderCal = Math.max(
                 biggestElfHolderCal,
