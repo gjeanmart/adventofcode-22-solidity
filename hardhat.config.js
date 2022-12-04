@@ -6,10 +6,9 @@ task(
   "Find the Elf carrying the most Calories. How many total Calories is that Elf carrying?"
 ).setAction(async (_taskArgs) => {
   const puzzle = "Day01";
-  const input = await utils.readFileContent("resources/day01-input02.txt");
   const contract = await utils.deployFullContract(puzzle);
-  const result = await contract.run(input);
-  console.log("RESULT for " + puzzle + " : " + result);
+  const solution = await utils.runContract("resources/day01-input02.txt", contract)
+  console.log("=> solution for " + puzzle + " : " + solution);
 });
 
 module.exports = {

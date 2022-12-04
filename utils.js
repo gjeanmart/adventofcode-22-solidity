@@ -10,15 +10,20 @@ const deployContract = async (name, libs) => {
   return await contract.deploy();
 };
 
+const readFileContent = async (path) => {
+  return await readFile(path, "utf8");
+}
+
 var Utils = {
-  readFileContent: async (path) => {
-    return await readFile(path, "utf8");
-  },
   deployFullContract: async (name) => {
     const utilsContract = await deployLibContract("utils");
     return await deployContract(name, {
       utils: utilsContract.address,
     });
+  },
+  runContract: async (inputPath, contract) => {
+    const input = await readFileContent(inputPath);
+    return await contract.run(input);
   },
 };
 
