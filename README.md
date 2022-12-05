@@ -19,7 +19,7 @@ $ npx hardhat test
 Run task via 
 
 ```shell
-$ npx hardhat solve-puzzle --day XX
+$ npx hardhat solve-puzzle --day XX (01, 02_1, 02_2, 03, ...)
 ```
 
 

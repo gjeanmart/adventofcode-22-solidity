@@ -5,7 +5,7 @@ import "hardhat/console.sol";
 import "./strings.sol";
 import "./utils.sol";
 
-contract Day02 {
+contract Day02_2 {
     using strings for *;
     using Math for uint256;
 
@@ -20,15 +20,11 @@ contract Day02 {
         SCISSORS
     }
 
-    struct Game{
-        MOVE opponent;
-        MOVE me;
-    }
-
     mapping(string => MOVE) public str2move;
+    mapping(string => GAME_RESULT) public str2gameresult;
     mapping(MOVE => uint256) public pointsPerMove;
     mapping(GAME_RESULT => uint256) public pointsPerGameResult;
-    mapping(bytes32 => GAME_RESULT) public gameCombinaisons;
+    mapping(bytes32 => MOVE) public gameCombinaisons;
 
     constructor() {
         pointsPerMove[MOVE.ROCK] = 1;
@@ -40,18 +36,18 @@ contract Day02 {
         str2move["A"] = MOVE.ROCK;
         str2move["B"] = MOVE.PAPER;
         str2move["C"] = MOVE.SCISSORS;
-        str2move["X"] = MOVE.ROCK;
-        str2move["Y"] = MOVE.PAPER;
-        str2move["Z"] = MOVE.SCISSORS;
-        gameCombinaisons[keccak256(abi.encodePacked(MOVE.ROCK, MOVE.ROCK))] = GAME_RESULT.DRAW;
-        gameCombinaisons[keccak256(abi.encodePacked(MOVE.ROCK, MOVE.PAPER))] = GAME_RESULT.WIN;
-        gameCombinaisons[keccak256(abi.encodePacked(MOVE.ROCK, MOVE.SCISSORS))] = GAME_RESULT.LOSS;
-        gameCombinaisons[keccak256(abi.encodePacked(MOVE.PAPER, MOVE.PAPER))] = GAME_RESULT.DRAW;
-        gameCombinaisons[keccak256(abi.encodePacked(MOVE.PAPER, MOVE.ROCK))] = GAME_RESULT.LOSS;
-        gameCombinaisons[keccak256(abi.encodePacked(MOVE.PAPER, MOVE.SCISSORS))] = GAME_RESULT.WIN;
-        gameCombinaisons[keccak256(abi.encodePacked(MOVE.SCISSORS, MOVE.SCISSORS))] = GAME_RESULT.DRAW;
-        gameCombinaisons[keccak256(abi.encodePacked(MOVE.SCISSORS, MOVE.PAPER))] = GAME_RESULT.LOSS;
-        gameCombinaisons[keccak256(abi.encodePacked(MOVE.SCISSORS, MOVE.ROCK))] = GAME_RESULT.WIN;
+        str2gameresult["X"] = GAME_RESULT.LOSS;
+        str2gameresult["Y"] = GAME_RESULT.DRAW;
+        str2gameresult["Z"] = GAME_RESULT.WIN;
+        gameCombinaisons[keccak256(abi.encodePacked(MOVE.ROCK, GAME_RESULT.DRAW))] = MOVE.ROCK;
+        gameCombinaisons[keccak256(abi.encodePacked(MOVE.ROCK, GAME_RESULT.WIN))] = MOVE.PAPER;
+        gameCombinaisons[keccak256(abi.encodePacked(MOVE.ROCK, GAME_RESULT.LOSS))] = MOVE.SCISSORS;
+        gameCombinaisons[keccak256(abi.encodePacked(MOVE.PAPER, GAME_RESULT.DRAW))] = MOVE.PAPER;
+        gameCombinaisons[keccak256(abi.encodePacked(MOVE.PAPER, GAME_RESULT.WIN))] = MOVE.SCISSORS;
+        gameCombinaisons[keccak256(abi.encodePacked(MOVE.PAPER, GAME_RESULT.LOSS))] = MOVE.ROCK;
+        gameCombinaisons[keccak256(abi.encodePacked(MOVE.SCISSORS, GAME_RESULT.DRAW))] = MOVE.SCISSORS;
+        gameCombinaisons[keccak256(abi.encodePacked(MOVE.SCISSORS, GAME_RESULT.WIN))] = MOVE.ROCK;
+        gameCombinaisons[keccak256(abi.encodePacked(MOVE.SCISSORS, GAME_RESULT.LOSS))] = MOVE.PAPER;
     }
 
     function run(string memory s) external view returns (uint256) {
@@ -64,10 +60,10 @@ contract Day02 {
         while (!input.empty()) {
             strings.slice memory round = input.split(delimBreak);
             MOVE opponentMove = str2move[round.split(delimSpace).toString()];
-            MOVE myMove = str2move[round.split(delimSpace).toString()];
-            GAME_RESULT result = gameCombinaisons[keccak256(abi.encodePacked(opponentMove, myMove))];
+            GAME_RESULT gameResult = str2gameresult[round.split(delimSpace).toString()];
+            MOVE myMove = gameCombinaisons[keccak256(abi.encodePacked(opponentMove, gameResult))];
 
-            uint256 points = pointsPerMove[myMove] + pointsPerGameResult[result];
+            uint256 points = pointsPerMove[myMove] + pointsPerGameResult[gameResult];
             totalPoints += points;
         }
 

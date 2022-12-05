@@ -2,12 +2,12 @@ require("@nomicfoundation/hardhat-toolbox");
 const utils = require("./utils");
 
 task("solve-puzzle", "Solve Advent of Code puzzle")
-  .addParam("day", "Which day?")
-  .addParam("withlib", "Include lib in the contact deployment?")
+  .addParam("day", "Which day? (01, 02_1, 02_2, ...)")
+  .addOptionalParam("withlib", "Include lib in the contact deployment?")
   .setAction(async (taskArgs) => {
     const contract = await utils.deployFullContract(
       "Day" + taskArgs.day,
-      JSON.parse(taskArgs.withlib)
+      JSON.parse(taskArgs.withlib || false)
     );
     const solution = await utils.runContract(
       "resources/day" + taskArgs.day + "-input.txt",
